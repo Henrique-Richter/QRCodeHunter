@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">QR Code Hunter</string>
+    <string name="title_activity_main_menu">MainMenuActivity</string>
+</resources>
