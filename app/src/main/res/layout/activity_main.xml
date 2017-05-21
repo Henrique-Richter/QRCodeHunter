@@ -11,32 +11,31 @@
     tools:context="br.com.henrique.qrhunt.MainActivity">
 
     <Button
+        android:text="currentGames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentGames"
+        android:layout_marginTop="44dp"
+        android:layout_below="@+id/addGameCode"
+        android:layout_alignStart="@+id/addGameCode"
+        android:layout_alignEnd="@+id/addGameCode" />
+
+    <Button
         android:text="Add a game code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addGameCode"
-        android:layout_marginBottom="16dp"
-        android:layout_above="@+id/currentGames"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:text="Create Game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
+        android:id="@+id/createGame"
         android:layout_above="@+id/addGameCode"
-        android:layout_marginBottom="40dp"
         android:layout_alignStart="@+id/addGameCode"
-        android:layout_alignEnd="@+id/addGameCode" />
-
-    <Button
-        android:text="currentGames"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/currentGames"
-        android:layout_marginBottom="111dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/addGameCode"
+        android:layout_marginBottom="43dp"
         android:layout_alignEnd="@+id/addGameCode" />
 
 </RelativeLayout>
