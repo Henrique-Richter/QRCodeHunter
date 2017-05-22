@@ -18,9 +18,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //JSONObject jsonObj = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
 
-     //   IntentIntegrator integrator = new IntentIntegrator(this);
-     //   integrator.initiateScan();
         Button createGame = (Button)findViewById(R.id.createGame);
+
+        //change to the list later on
+        Button currentGames = (Button)findViewById(R.id.currentGames);
 
         createGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,16 +29,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, newGameActivity.class));
             }
         });
+
+        currentGames.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ScanCodeActivity.class));
+            }
+        });
     }
 
-/*
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
-            // handle scan result
-        }
-        // else continue with any other code you need in the method
-
-    }
-*/
 }
