@@ -28,4 +28,13 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="33dp"
         android:id="@+id/missing" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/missing"
+        android:layout_toEndOf="@+id/missing"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="143dp"
+        android:id="@+id/scanResult" />
 </RelativeLayout>
