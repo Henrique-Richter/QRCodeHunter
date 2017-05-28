@@ -23,6 +23,15 @@ public class MainActivity extends AppCompatActivity {
         //change to the list later on
         Button currentGames = (Button)findViewById(R.id.currentGames);
 
+        Button addGame = (Button)findViewById(R.id.addGameCode);
+
+        addGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddGameCodeActivity.class));
+            }
+        });
+
         createGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ScanCodeActivity.class));
             }
         });
+
     }
 
 }
