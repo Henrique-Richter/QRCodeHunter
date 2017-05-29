@@ -22,6 +22,14 @@ public class ScanCodeActivity extends AppCompatActivity {
 
         Button scanCode = (Button)findViewById(R.id.scanCode);
 
+        Bundle bundle = getIntent().getExtras();
+
+        String code = bundle.getString("code");
+
+        TextView testBatata = (TextView) findViewById(R.id.testBatata);
+
+        testBatata.setText(code);
+
         scanCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

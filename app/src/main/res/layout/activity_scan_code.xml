@@ -37,4 +37,13 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="143dp"
         android:id="@+id/scanResult" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/scanResult"
+        android:layout_alignEnd="@+id/scanResult"
+        android:layout_marginBottom="61dp"
+        android:id="@+id/testBatata" />
 </RelativeLayout>
