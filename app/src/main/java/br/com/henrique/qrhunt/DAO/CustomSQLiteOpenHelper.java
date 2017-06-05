@@ -18,14 +18,14 @@ public class CustomSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CODE = "code";
 
     private static final String DATABASE_NAME = "qrcode.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String DATABASE_CREATE = " create table "
     + TABLE_GAME + "(" + COLUMN_ID
     + " integer primary key autoincrement , " + COLUMN_NAME
     + " text not null , " + COLUMN_QUANTITY
     + " integer not null , "+ COLUMN_FOUND
-    + " text , " + COLUMN_CODE
+    + " text DEFAULT '' , " + COLUMN_CODE
     + " text not null UNIQUE);";
 
     public CustomSQLiteOpenHelper ( Context context ) {

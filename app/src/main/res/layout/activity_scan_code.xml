@@ -23,27 +23,27 @@
         android:text="Missing : "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="47dp"
+        android:id="@+id/missing"
         android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/scanCode" />
+
+    <TextView
+        android:text="Game:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/missing"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="33dp"
-        android:id="@+id/missing" />
+        android:layout_marginStart="16dp"
+        android:id="@+id/gameName" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/missing"
-        android:layout_toEndOf="@+id/missing"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="143dp"
-        android:id="@+id/scanResult" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/scanResult"
-        android:layout_alignEnd="@+id/scanResult"
-        android:layout_marginBottom="61dp"
-        android:id="@+id/testBatata" />
+        android:id="@+id/scanResult"
+        android:layout_below="@+id/missing"
+        android:layout_toStartOf="@+id/missing"
+        android:layout_marginEnd="22dp" />
 </RelativeLayout>
