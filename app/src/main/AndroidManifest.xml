@@ -22,7 +22,8 @@
         <activity android:name=".ScanCodeActivity" />
         <activity android:name=".ShareGameActivity" />
         <activity android:name=".AddGameCodeActivity" />
-        <activity android:name=".ListGamesActivity"></activity>
+        <activity android:name=".ListGamesActivity" />
+        <activity android:name=".YouWinActivity"></activity>
     </application>
 
 </manifest>

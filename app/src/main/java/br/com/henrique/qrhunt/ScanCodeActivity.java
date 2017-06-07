@@ -23,6 +23,10 @@ public class ScanCodeActivity extends AppCompatActivity {
 
     GameModel game;
     long missing;
+    TextView missingText;
+    TextView gameName;
+    Intent i;
+    Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +34,27 @@ public class ScanCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan_code);
 
         Button scanCode = (Button)findViewById(R.id.scanCode);
+        Button delete = (Button)findViewById(R.id.deleteButton);
 
         Bundle bundle = getIntent().getExtras();
 
-        String code = bundle.getString("code");
+        final String code = bundle.getString("code");
 
-        TextView gameName = (TextView) findViewById(R.id.gameName);
-        TextView missingText = (TextView) findViewById(R.id.missing);
+        gameName = (TextView) findViewById(R.id.gameName);
+        missingText = (TextView) findViewById(R.id.missing);
 
 
-        GameDAO gameDAO = new GameDAO(this);
+        final GameDAO gameDAO = new GameDAO(this);
 
         try {
             gameDAO.open();
 
             game = gameDAO.getGameByCode(code);
 
+            gameDAO.close();
              missing = game.getQuantity() - StringUtils.countMatches(game.getFound(),",");
+
+            checkIfWin();
 
             gameName.setText("Game: " + game.getName());
             missingText.setText("Missing: "+ missing);
@@ -63,6 +71,25 @@ public class ScanCodeActivity extends AppCompatActivity {
                 integrator.initiateScan();
             }
         });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    gameDAO.open();
+                    gameDAO.deleteGame(code);
+                    gameDAO.close();
+
+                    startActivity(new Intent(ScanCodeActivity.this, MainActivity.class));
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -113,9 +140,30 @@ public class ScanCodeActivity extends AppCompatActivity {
             gameDAO.open();
 
             gameDAO.updateGame(found, game.getCode());
+            game.setFound(found);
+
+            gameDAO.close();
         }catch (Exception e){
             Log.e("Error","Error" + e);
         }
+        missing = missing -1;
+        checkIfWin();
+        missingText.setText("Missing: "+ missing);
+
         return "Tag added";
+    }
+
+    private void checkIfWin(){
+        if(missing == 0){
+            //Add your data to bundle
+            bundle.putString("name",game.getName());
+
+            i = new Intent(ScanCodeActivity.this, YouWinActivity.class);
+            //Add the bundle to the intent
+            i.putExtras(bundle);
+
+            //Fire that second activity
+            startActivity(i);
+        }
     }
 }
