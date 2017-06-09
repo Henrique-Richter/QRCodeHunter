@@ -1,9 +1,11 @@
 package br.com.henrique.qrhunt;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -69,6 +71,26 @@ public class newGameActivity extends AppCompatActivity {
             }
         });
 
+        Button goToSharePare = (Button)findViewById(R.id.create);
+        goToSharePare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(newGameActivity.this, ShareGameActivity.class);
 
+                Bundle bundle = new Bundle();
+
+                String name = ((EditText)findViewById(R.id.name)).getText().toString();
+                int quantity = Integer.parseInt(((EditText)findViewById(R.id.numberOfTags)).getText().toString());
+                //Add your data to bundle
+                bundle.putString("name",name);
+                bundle.putInt("quantity", quantity);
+
+                //Add the bundle to the intent
+                i.putExtras(bundle);
+
+                //Fire that second activity
+                startActivity(i);
+            }
+        });
     }
 }

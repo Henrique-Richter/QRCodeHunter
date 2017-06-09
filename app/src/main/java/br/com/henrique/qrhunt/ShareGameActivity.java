@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import static android.R.attr.width;
 
@@ -36,7 +37,10 @@ public class ShareGameActivity extends AppCompatActivity {
     private static final int WIDTH = 500;
     public static int white = 0xFFFFFFFF;
     public static int black = 0xFF000000;
+    private String code;
     File mediaStorageDir;
+    int quantity;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +51,21 @@ public class ShareGameActivity extends AppCompatActivity {
                 + "/Android/data/"
                 + getApplicationContext().getPackageName()
                 + "/Files");
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        try {
-            Bitmap bitmap = encodeAsBitmap("Test");
-            imageView.setImageBitmap(bitmap);
-            storeImage(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+
+            }
         }
+        Bundle bundle = getIntent().getExtras();
+
+        name = bundle.getString("name");
+        code = String.valueOf(UUID.randomUUID());
+        quantity = bundle.getInt("quantity");
+
+       // name = "testName";;
+       // code = String.valueOf(UUID.randomUUID());
+       // quantity = 5;
 
         Button shareButton = (Button)findViewById(R.id.sharePdf);
 
@@ -67,26 +78,34 @@ public class ShareGameActivity extends AppCompatActivity {
 
     }
 
-    private void createPdf(){
+    private String createPdf(){
         try {
             Document document = new Document();
             // Create a media file name
             String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
 
-            String file = mediaStorageDir.getPath() + File.separator + "Hello.pdf";
+            String file = mediaStorageDir.getPath() + File.separator + timeStamp +".pdf";
             PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
-            Paragraph p = new Paragraph("Hello PDF");
+            Paragraph p = new Paragraph("This is the Main tag, others players will use it to start playing the game");
             document.add(p);
+            Image mainImage = Image.getInstance(createGameTag());
+            document.add(mainImage);
+            Paragraph paragraph = new Paragraph("Hide these tags from the players:");
+            document.add(paragraph);
 
-            Image image = Image.getInstance(mediaStorageDir.getPath() + File.separator + "MI_"+ "teste" +".jpg");
-            document.add(image);
-
+            String[] imagens = generateAllTags(quantity);
+            for(int i = 0; i < imagens.length;i++){
+                Image image = Image.getInstance(imagens[i]);
+                document.add(image);
+            }
             document.close();
+            return timeStamp;
         }catch(Exception e){
             Log.e("PDFCreator", "Exception:" + e);
 
         }
+        return "";
     }
     Bitmap encodeAsBitmap(String str) throws WriterException {
         BitMatrix result;
@@ -112,9 +131,9 @@ public class ShareGameActivity extends AppCompatActivity {
     }
 
     private void shareIt() {
-        createPdf();
+       String pdfile = createPdf();
 
-        File file = new File(mediaStorageDir.getPath(),"Hello.pdf");
+        File file = new File(mediaStorageDir.getPath(),pdfile + "pdf");
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("application/pdf");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
@@ -122,21 +141,10 @@ public class ShareGameActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
 
-        /*try {
-            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("image/jpeg");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, encodeAsBitmap("Test").compress(Bitmap.CompressFormat.JPEG, 100, stream));
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        */
     }
 
-    private void storeImage(Bitmap image) {
-        File pictureFile = getOutputMediaFile();
+    private void storeImage(Bitmap image,String imageName) {
+        File pictureFile = getOutputMediaFile(imageName);
         if (pictureFile == null) {
             Log.d("test",
                     "Error creating media file, check storage permissions: ");// e.getMessage());
@@ -154,26 +162,70 @@ public class ShareGameActivity extends AppCompatActivity {
     }
 
     /** Create a File for saving an image or video */
-    private  File getOutputMediaFile(){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
+    private  File getOutputMediaFile(String imageName){
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
                 return null;
             }
         }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
         File mediaFile;
-        String mImageName="MI_"+ "teste" +".jpg";
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+        mediaFile = new File(imageName);
         return mediaFile;
     }
 
+    private String[] generateAllTags(int quantity){
+        String[] imagePaths = new String[quantity];
+        String imageName;
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+
+        for(int i = 0;i<quantity;i++){
+            imageName = mediaStorageDir.getPath() + File.separator +
+                    timeStamp + String.valueOf(i)  + ".jpg";
+            imagePaths[i] = imageName;
+
+
+            String JsonToBeEncoded = createBitMap(i+1);
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = encodeAsBitmap(JsonToBeEncoded);
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+
+            storeImage(bitmap,imageName);
+        }
+
+        return imagePaths;
+    }
+
+    private String createBitMap(int quantity){
+        String q = "\"";
+        String json = "{\"code\":" + q + code + q + ",\"step\":"+  String.valueOf(quantity)  +"}" ;
+        return json;
+    }
+
+    private String createGameTag(){
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        String imageName = mediaStorageDir.getPath() + File.separator +
+                timeStamp + "main"  + ".jpg";
+
+        String q = "\"";
+
+        String json = "{\"name\":" + q + name + q + ",\"quantity\":"
+                + String.valueOf(quantity)
+                + ",\"code\":"+ q + code + q +" }";
+        //{"name":"game","quantity":5,"code":"2c574b29-0031-44f9-8df8-457ee39a4ad5"}
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = encodeAsBitmap(json);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        storeImage(bitmap,imageName);
+        return imageName;
+    }
 }
