@@ -71,6 +71,14 @@ public class newGameActivity extends AppCompatActivity {
             }
         });
 
+        Button cancelButton = (Button)findViewById(R.id.cancel) ;
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent i = new Intent(newGameActivity.this, MainActivity.class);
+                                                startActivity(i);
+                                            }
+                                        });
         Button goToSharePare = (Button)findViewById(R.id.create);
         goToSharePare.setOnClickListener(new View.OnClickListener() {
             @Override

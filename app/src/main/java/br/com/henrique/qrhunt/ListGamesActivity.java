@@ -22,7 +22,7 @@ public class ListGamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_games);
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        final Spinner spinner = (Spinner)findViewById(R.id.spinner);
 
         try {
             GameDAO gameDao = new GameDAO(this);
@@ -32,7 +32,7 @@ public class ListGamesActivity extends AppCompatActivity {
             gameDao.close();
 
             String[] spinnerArray = new String[lista.size()];
-            HashMap<Integer,String> spinnerMap = new HashMap<Integer, String>();
+            final HashMap<Integer,String> spinnerMap = new HashMap<Integer, String>();
             for (int i = 0; i < lista.size(); i++)
             {
                 spinnerMap.put(i,lista.get(i).getCode());
@@ -44,11 +44,11 @@ public class ListGamesActivity extends AppCompatActivity {
             spinner.setAdapter(adapter);
 
             Button goToGamePage = (Button)findViewById(R.id.goToGame);
-            final String id = spinnerMap.get(spinner.getSelectedItemPosition());
 
             goToGamePage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String id = spinnerMap.get(spinner.getSelectedItemPosition());
                     Intent i = new Intent(ListGamesActivity.this, ScanCodeActivity.class);
 
                     Bundle bundle = new Bundle();

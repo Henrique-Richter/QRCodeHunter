@@ -95,6 +95,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
+        android:maxLength="2"
         android:id="@+id/numberOfTags"
         android:layout_alignBaseline="@+id/textView6"
         android:layout_alignBottom="@+id/textView6"
