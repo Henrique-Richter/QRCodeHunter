@@ -79,17 +79,30 @@ public class newGameActivity extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
 
-                String name = ((EditText)findViewById(R.id.name)).getText().toString();
-                int quantity = Integer.parseInt(((EditText)findViewById(R.id.numberOfTags)).getText().toString());
-                //Add your data to bundle
-                bundle.putString("name",name);
-                bundle.putInt("quantity", quantity);
+                EditText nameText = (EditText) findViewById(R.id.name);
+                EditText quantityText = (EditText) findViewById(R.id.numberOfTags);
 
-                //Add the bundle to the intent
-                i.putExtras(bundle);
+                if(nameText.getText().toString().trim().equals("") && quantityText.getText().toString().trim().equals("")){
+                    quantityText.setError("Number of tags is required! ");
+                    nameText.setError(" Name for the game is required! ");
+                }else if(nameText.getText().toString().trim().equals("")){
+                    nameText.setError(" Name for the game is required! ");
+                }else if(quantityText.getText().toString().trim().equals("")){
+                    quantityText.setError("Number of tags is required! ");
+                }else {
 
-                //Fire that second activity
-                startActivity(i);
+                    String name = nameText.getText().toString();
+                    int quantity = Integer.parseInt(quantityText.getText().toString());
+                    //Add your data to bundle
+                    bundle.putString("name", name);
+                    bundle.putInt("quantity", quantity);
+
+                    //Add the bundle to the intent
+                    i.putExtras(bundle);
+
+                    //Fire that second activity
+                    startActivity(i);
+                }
             }
         });
     }

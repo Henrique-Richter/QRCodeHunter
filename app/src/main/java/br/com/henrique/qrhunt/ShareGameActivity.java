@@ -130,6 +130,7 @@ public class ShareGameActivity extends AppCompatActivity {
     }
 
     private void shareIt() {
+
        String pdfile = createPdf();
 
         File file = new File(mediaStorageDir.getPath(),pdfile + ".pdf");
