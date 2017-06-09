@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -133,7 +132,7 @@ public class ShareGameActivity extends AppCompatActivity {
     private void shareIt() {
        String pdfile = createPdf();
 
-        File file = new File(mediaStorageDir.getPath(),pdfile + "pdf");
+        File file = new File(mediaStorageDir.getPath(),pdfile + ".pdf");
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("application/pdf");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
